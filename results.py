@@ -1,12 +1,22 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+This module connect to postgresql and print results of three quesions.
 
-import psycopg2
+The three questions are defined in the README.md.
+
+Before running this module,run the cview.sql first to create views in database.
+
+"""
+
+
+import psycopg2  # Use psycoppg2 DBI to connect to postgresql database
 
 # Connect to the database first,then parse the query and return the result
 
 
 def connect_db_and_return_result(query):
+    """Connect to the postgresql database and return the result of query."""
     try:
         connection = psycopg2.connect('dbname=news')
         cursor = connection.cursor()
@@ -22,6 +32,7 @@ def connect_db_and_return_result(query):
 # Which articles have been accessed the most?
 
 def popular_article():
+    """Print the most three popular articles with title and numbers."""
     query1 = '''
     SELECT articles_view.title,articles_view.views
     FROM articles_view
@@ -40,6 +51,7 @@ def popular_article():
 
 
 def popular_author():
+    """Print the most popular authors with names and numbers."""
     query2 = '''
     SELECT authors.name,sum(articles_view.views) AS views
     FROM authors JOIN articles_view
@@ -59,6 +71,7 @@ def popular_author():
 
 
 def error_log():
+    """Print out the days have more than 1% of HTTP request errors."""
     query3 = '''
     SELECT total_error.days,
     round(total_error.errors*100.0/total_request.requests,1) AS rate
