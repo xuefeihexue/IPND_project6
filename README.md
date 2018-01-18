@@ -5,7 +5,7 @@
 
 >In the project, you have to write a `python` code to connect to a `postgresql` database and get result as plain text of the reporting questions.
 
-##### Three questions:
+**Three questions:**
 1. What are the most popular three articles of all time? Which articles have been accessed the most?
 2. Who are the most popular article authors of all time? That is, when you sum up all of the articles each author has written, which authors get the most page views?
 3. On which days did more than 1% of requests lead to errors? The log table includes a column status that indicates the HTTP status code that the news site sent to the user's browser.
