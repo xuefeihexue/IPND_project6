@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.7.12
+atom --safe
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import psycopg2
@@ -23,10 +24,10 @@ def connect_db_and_return_result(query):
 
 def popular_article():
     query1 = '''
-    select articles_view.title,articles_view.views
-    from articles_view
-    order by articles_view.views DESC
-    limit 3;
+    SELECT articles_view.title,articles_view.views
+    FROM articles_view
+    ORDER BY articles_view.views DESC
+    LIMIT 3;
     '''
     result = connect_db_and_return_result(query1)
     print 'The top 3 articles are: '
@@ -41,11 +42,11 @@ def popular_article():
 
 def popular_author():
     query2 = '''
-    select authors.name,sum(articles_view.views) as views
-    from authors join articles_view
-    on articles_view.author=authors.id
-    group by authors.id
-    order by views DESC;
+    SELECT authors.name,sum(articles_view.views) AS views
+    FROM authors JOIN articles_view
+    ON articles_view.author=authors.id
+    GROUP BY authors.id
+    ORDER BY views DESC;
     '''
     result = connect_db_and_return_result(query2)
     print 'Author Popularity: '
@@ -60,12 +61,12 @@ def popular_author():
 
 def error_log():
     query3 = '''
-    select total_error.days,
-    round(total_error.errors*100.0/total_request.requests,1) as rate
-    from total_error,total_request
-    where total_error.days=total_request.days
-    and round(total_error.errors*100.0/total_request.requests,1)>1.0
-    order by total_error.days;
+    SELECT total_error.days,
+    round(total_error.errors*100.0/total_request.requests,1) AS rate
+    FROM total_error,total_request
+    WHERE total_error.days=total_request.days
+    AND round(total_error.errors*100.0/total_request.requests,1)>1.0
+    ORDER BY total_error.days;
     '''
     result = connect_db_and_return_result(query3)
     print 'Days with errors > 1% are: '

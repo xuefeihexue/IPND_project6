@@ -43,26 +43,30 @@ Running this command will connect to your installed database server and execute 
 
 ##### 4. Create the following Views
  ```sql
-create view articles_view as
-select articles.title,articles.author,count(*) as views
-from articles join log
-on log.path like CONCAT('%',articles.slug,'%')
-group by articles.id;
+CREATE OR REPLACE VIEW articles_view AS
+SELECT articles.title,articles.author,count(*) AS views
+FROM articles JOIN log
+ON log.path LIKE CONCAT('%',articles.slug,'%')
+GROUP BY articles.id;
   ```
   ```sql
-create view total_error as
-select date(time) as days, count(status) as errors
-from log
-where status='404 NOT FOUND'
-group by days;
+CREATE OR REPLACE VIEW total_error AS
+SELECT date(time) AS days, count(status) AS errors
+FROM log
+WHERE status='404 NOT FOUND'
+GROUP BY days;
  ```
  ```sql
-Create view total_request as
-select date(time) as days, count(id) as requests
-from log
-group by days;
+CREATE OR REPLACE VIEW total_request AS
+SELECT date(time) AS days, count(id) AS requests
+FROM log
+GROUP BY days;
  ```
 ##### 5. Running the Python code
+* By using the SQL file `cview.sql` to create the views in database
+```
+psql -f cview.sql news
+```
 * After the Views have been created, inside the virtual machine run [`results.py`](https://github.com/xuefeihexue/IPND_project6/blob/master/results.py) with
  ```python
  python results.py
