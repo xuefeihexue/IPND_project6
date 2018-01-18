@@ -1,4 +1,4 @@
-# Log-Analysis
+# Log Analysis Project (IPND)
 
 ### Project instruction
 >The task is  to build an internal reporting tool that will use information from the database to discover what kind of articles the site's readers like.
