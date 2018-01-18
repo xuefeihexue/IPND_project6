@@ -53,6 +53,10 @@ def popular_author():
         print '"', element[0], '"'+'--', element[1]
     print '\n'
 
+# On which days did more than 1% of requests lead to errors?
+# The log table includes a column status that indicates the HTTP
+# status code that the news site sent to the user's browser.
+
 
 def error_log():
     query3 = '''
