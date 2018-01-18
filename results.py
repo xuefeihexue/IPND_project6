@@ -81,10 +81,13 @@ def error_log():
     ORDER BY total_error.days;
     '''
     result = connect_db_and_return_result(query3)
-    print 'Days with errors > 1% are: '
-    for element in result:
+    if result==p[]:
+        print 'Thses is no day having connecting error >1%.'
+    else:
+        print 'Days with errors > 1% are: '
+        for element in result:
         print '"', element[0], '"'+'--', element[1], '%'
-    print '\n'
+        print '\n'
 
 
 popular_article()
