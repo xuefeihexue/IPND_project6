@@ -95,7 +95,7 @@ def error_log():
     ORDER BY total_error.days;
     '''
     result = connect_db_and_return_result(query3)
-    question3 = 'Days with errors > 1% are: '
+    question3 = '3. Days with errors > 1% are: '
     if result == []:
         print 'Thses is no day having connecting error >1%.'
     else:
