@@ -12,6 +12,7 @@ Before running this module,run the cview.sql first to create views in database.
 
 import psycopg2  # Use psycoppg2 DBI to connect to postgresql database
 
+
 # Connect to the database first,then parse the query and return the result
 
 
@@ -24,8 +25,8 @@ def connect_db_and_return_result(query):
         result = cursor.fetchall()
         connection.close()
         return result
-    except BaseException:
-        print 'Sorry,connection failed'
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
 
 
 def print_result(result_list, question):
