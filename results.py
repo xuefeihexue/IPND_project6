@@ -28,6 +28,24 @@ def connect_db_and_return_result(query):
         print 'Sorry,connection failed'
 
 
+def print_result(result_list, question):
+    """Print the results in a format way."""
+    print question+'\n'+'-'*len(question)
+    longest_length_i1 = 0  # Longest length of the first element in result
+    longest_length_i2 = 0  # Longest length of the second element in result
+    for i in result_list:
+        if len(i[0]) > longest_length_i1:
+            longest_length_i1 = len(i[0])
+        if len(str(i[1])) > longest_length_i2:
+            longest_length_i2 = len(str(i[1]))
+    for element in result_list:
+        print '"', element[0], '"',\
+         ' ' * (longest_length_i1 - len(element[0])), '--', element[1],\
+         ' '*(longest_length_i2 - len(str(element[1]))), ' views'
+    print
+    print '\n'
+
+
 # What are the most popular three articles of all time?
 # Which articles have been accessed the most?
 
@@ -40,10 +58,8 @@ def popular_article():
     LIMIT 3;
     '''
     result = connect_db_and_return_result(query1)
-    print 'The top 3 articles are: '
-    for element in result:
-        print '"', element[0], '"'+'--', element[1]
-    print '\n'
+    question1 = '1. What are the most popular three articles of all time?'
+    print_result(result, question1)
 
 # Who are the most popular article authors of all time? That is,
 # when you sum up all of the articles each author has written,
@@ -60,10 +76,8 @@ def popular_author():
     ORDER BY views DESC;
     '''
     result = connect_db_and_return_result(query2)
-    print 'Author Popularity: '
-    for element in result:
-        print '"', element[0], '"'+'--', element[1]
-    print '\n'
+    question2 = '2. Who are the most popular authors?'
+    print_result(result, question2)
 
 # On which days did more than 1% of requests lead to errors?
 # The log table includes a column status that indicates the HTTP
@@ -81,15 +95,18 @@ def error_log():
     ORDER BY total_error.days;
     '''
     result = connect_db_and_return_result(query3)
-    if result==p[]:
+    question3 = 'Days with errors > 1% are: '
+    if result == []:
         print 'Thses is no day having connecting error >1%.'
     else:
-        print 'Days with errors > 1% are: '
+        print question3+'\n'+'-'*len(question3)
         for element in result:
-        print '"', element[0], '"'+'--', element[1], '%'
-        print '\n'
+            print '"', element[0], '"'+'--', element[1], '%'
+            print '\n'
 
+# Check if it is the main module and run the module
 
-popular_article()
-popular_author()
-error_log()
+if __name__ == '__main__':
+    popular_article()
+    popular_author()
+    error_log()

@@ -1,7 +1,7 @@
 CREATE OR REPLACE VIEW articles_view AS
 SELECT articles.title,articles.author,count(*) AS views
 FROM articles JOIN log
-ON log.path LIKE CONCAT('%',articles.slug,'%')
+ON log.path LIKE CONCAT('%',articles.slug)
 GROUP BY articles.id;
 
 CREATE OR REPLACE VIEW total_error AS

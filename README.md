@@ -15,12 +15,14 @@
 * [Vagrant](https://www.vagrantup.com/)
 * [Python2.7](https://www.python.org/)  
 
-For setting up the environment and troubleshooting, check the link [How to install VM](https://classroom.udacity.com/nanodegrees/nd000/parts/b910112d-b5c0-4bfe-adca-6425b137ed12/modules/a3a0987f-fc76-4d14-a759-b2652d06ab2b/lessons/303a271d-bc69-4eba-ae38-e9875f841604/concepts/14c72fe3-e3fe-4959-9c4b-467cf5b7c3a0).
+For setting up the environment and troubleshooting:
+* If you are currently enrolled in Udacity IPND, check the link [How to install VM](https://classroom.udacity.com/courses/ud197/lessons/3423258756/concepts/14c72fe3-e3fe-4959-9c4b-467cf5b7c3a0).
+* If you are not able to access the link above, check the link [Set up local Linux Environment with Vagrant](https://medium.com/@JohnFoderaro/how-to-set-up-a-local-linux-environment-with-vagrant-163f0ba4da77)
 
 ### Start the Project
 
 ##### 1. Lunching the Virtual Machine
-This project makes use of the same Linux-based virtual machine (VM)
+This project makes use of the same Linux-based virtual machine (VM). To make sure you are in the same environment, please download the same [vagrant file](https://github.com/xuefeihexue/IPND_project6/blob/master/Vagrantfile) includes in the repository. And put it in your vagrant directory. Check this [link](https://github.com/udacity/fullstack-nanodegree-vm) for more information about this vagrant file.
 * From your terminal, inside the vagrant subdirectory, run the command `vagrant up`
 * you can run `vagrant ssh` to log in
 
@@ -42,33 +44,35 @@ Running this command will connect to your installed database server and execute 
 * `\d table` — (replace table with the name of a table) — shows the database schema for that particular table.
 
 ##### 4. Create the following Views
- ```sql
-CREATE OR REPLACE VIEW articles_view AS
-SELECT articles.title,articles.author,count(*) AS views
-FROM articles JOIN log
-ON log.path LIKE CONCAT('%',articles.slug,'%')
-GROUP BY articles.id;
-  ```
-  ```sql
-CREATE OR REPLACE VIEW total_error AS
-SELECT date(time) AS days, count(status) AS errors
-FROM log
-WHERE status='404 NOT FOUND'
-GROUP BY days;
- ```
- ```sql
-CREATE OR REPLACE VIEW total_request AS
-SELECT date(time) AS days, count(id) AS requests
-FROM log
-GROUP BY days;
- ```
-##### 5. Running the Python code
-* By using the SQL file `cview.sql` to create the views in database
-```
+* The following views need to be added to the news database before running the Python script for the first time. For your convenience, you can set up these views using the [`cview.sql`](https://github.com/xuefeihexue/IPND_project6/blob/master/cview.sql) script by running:
+```Python
 psql -f cview.sql news
 ```
+* The `cview.sql` script will create the following views:
+ ```sql
+ CREATE OR REPLACE VIEW articles_view AS
+ SELECT articles.title,articles.author,count(*) AS views
+ FROM articles JOIN log
+ ON log.path LIKE CONCAT('%',articles.slug)
+ GROUP BY articles.id;
+ ```
+ ```sql
+ CREATE OR REPLACE VIEW total_error AS
+ SELECT date(time) AS days, count(status) AS errors
+ FROM log
+ WHERE status='404 NOT FOUND'
+ GROUP BY days;
+ ```
+ ```sql
+ CREATE OR REPLACE VIEW total_request AS
+ SELECT date(time) AS days, count(id) AS requests
+ FROM log
+ GROUP BY days;
+ ```
+
+##### 5. Running the Python code
 * After the Views have been created, inside the virtual machine run [`results.py`](https://github.com/xuefeihexue/IPND_project6/blob/master/results.py) with
- ```python
+ ```Python
  python results.py
  ```
 * The output result is in the text file [output.txt](https://github.com/xuefeihexue/IPND_project6/blob/master/output.txt)
