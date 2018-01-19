@@ -15,6 +15,6 @@
 
 
 
-Days with errors > 1% are:
+3. Days with errors > 1% are:
 ---------------------------
 " 2016-07-17 "-- 2.3 %
