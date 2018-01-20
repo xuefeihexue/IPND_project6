@@ -12,7 +12,6 @@ Before running this module,run the cview.sql first to create views in database.
 
 import psycopg2  # Use psycoppg2 DBI to connect to postgresql database
 
-
 # Connect to the database first,then parse the query and return the result
 
 
@@ -25,30 +24,36 @@ def connect_db_and_return_result(query):
         result = cursor.fetchall()
         connection.close()
         return result
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+    except BaseException:
+        print 'Sorry,connection failed'
 
 
 def print_result(result_list, question):
     """Print the results in a format way."""
     print question+'\n'+'-'*len(question)
-    longest_length_i1 = 0  # Longest length of the first element in result
-    longest_length_i2 = 0  # Longest length of the second element in result
-    for i in result_list:
-        if len(i[0]) > longest_length_i1:
-            longest_length_i1 = len(i[0])
-        if len(str(i[1])) > longest_length_i2:
-            longest_length_i2 = len(str(i[1]))
+    # Longest length of the first element in result
+    longest_length_i1 = max(map(len, (a[0] for a in result_list)))
+    # Longest length of the second element in result
+    longest_length_i2 = max(map(len, (str(a[1]) for a in result_list)))
+    """
+    Helps to break down the one liner for max lenght
+    (a[0] for a in result_list) : ["str1", "longstr2", "str3"]
+        returns a list with the first elements only
+    map(len, that_list) : [4, 8, 4]
+        returns a list with len applied to each element
+    max(that_second_list) : 8
+        returns the biggest element of that second list
+    """
     for element in result_list:
-        print '"', element[0], '"',\
-         ' ' * (longest_length_i1 - len(element[0])), '--', element[1],\
-         ' '*(longest_length_i2 - len(str(element[1]))), ' views'
-    print
-    print '\n'
-
+        print '" {} "'.format(element[0]),
+        print ' ' * (longest_length_i1 - len(element[0])),
+        print '--', element[1],
+        print ' '*(longest_length_i2 - len(str(element[1]))), ' views'
+    print '\n\n'
 
 # What are the most popular three articles of all time?
 # Which articles have been accessed the most?
+
 
 def popular_article():
     """Print the most three popular articles with title and numbers."""
@@ -106,6 +111,7 @@ def error_log():
             print '\n'
 
 # Check if it is the main module and run the module
+
 
 if __name__ == '__main__':
     popular_article()
